@@ -1,0 +1,13 @@
+
+battleship.common.js:
+	Ship object
+	Fleet object
+	Grid object
+	Cell object
+	
+battleship.js:
+	AI object (theirs)
+	Game object
+	Player object
+	Simulater object (tracks games)
+	"Main" code (at bottom of file)
