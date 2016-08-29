@@ -93,25 +93,108 @@ CandidateAI.prototype.initializeGame = function() {
 	x = -1;
 	y = -1;
     this.getNextCoord = function() {
-	
-		// or, instead of this mess, we could get probabilities for all primary and secondary target cells, and add 1 to primaries to weight them,
-		// depending on what ships haven't been sunk yet
 		
 		this.getPossibleShipLocations();
+	
+		var targetCellList = [];
 		
-		alert("Possible Carrier locations: " + enemyShips[0].possibleLocations);
-
+		// ignoring hit-adjacent cells for now
+		for (i = 0; i < cells.length; i++) {
+			for (j = 0; j < cells.length; j++) {
+				if (cells[i][j].status == cellStatus.primaryTarget) {
+					targetCellList.push(cells[i][j]);
+				}
+				// add secondary targets if enemy Carrier, Battleship, and either their Destroyer or their Submarine is sunk (this is arbitrary and might change later)
+				if (cells[i][j].status == cellStatus.secondaryTarget && enemyShips[0].sunk && enemyShips[1].sunk && (enemyShips[2].sunk || enemyShips[3].sunk)) {
+					targetCellList.push(cells[i][j]);
+				}
+			}
+		}
 		
+		var targetCell;
+		var highestWeight = 0;
+		var cell, ship;
+		var cellX, cellY;
+		var above, below, left, right;
+		var locations = 0;
+		var status;
+		for (i = 0; i < targetCellList.length; i++) {
+			above = 0;
+			below = 0;
+			left = 0;
+			right = 0;
+			cell = targetCellList[i];
+			cellX = cell.x;
+			cellY = cell.y;
+			// find empty cells above
+			for (k = 1; k <= 4; k++) {
+				if (cellY - k < 0) {
+					break;
+				}
+				status = cells[cellX][cellY-k].status;
+				if (status == cellStatus.miss || status == cellStatus.sunk || status == cellStatus.clear) {
+					break;
+				}
+				above++;
+			}
+			// find empty cells below
+			for (k = 1; k <= 4; k++) {
+				if (cellY + k > 9) {
+					break;
+				}
+				status = cells[cellX][cellY+k].status;
+				if (status == cellStatus.miss || status == cellStatus.sunk || status == cellStatus.clear) {
+					break;
+				}
+				below++;
+			}
+			// find empty cells to the left
+			for (k = 1; k <= 4; k++) {
+				if (cellX - k < 0) {
+					break;
+				}
+				status = cells[cellX-k][cellY].status;
+				if (status == cellStatus.miss || status == cellStatus.sunk || status == cellStatus.clear) {
+					break;
+				}
+				left++;
+			}
+			// find empty cells to the right
+			for (k = 1; k <= 4; k++) {
+				if (cellX + k > 9) {
+					break;
+				}
+				status = cells[cellX + k][cellY].status;
+				if (status == cellStatus.miss || status == cellStatus.sunk || status == cellStatus.clear) {
+					break;
+				}
+				right++;
+			}
 			
-		// placehoder code:	
-		if (x == 9) {
-			x = -1;
+			// find the probability that any unsunk enemy ship is in this cell
+			for (s = 0; s < enemyShips.length; s++) {
+				ship = enemyShips[s];
+				if (!ship.sunk) {
+					cell.weight += Math.max(0, (Math.max(above, ship.size - 1) + Math.max(below, ship.size - 1) - (ship.size - 2))) / ship.possibleLocations;
+				}
+			}
+			
+			cell.weight = Math.round(cell.weight * 1000) / 1000;
+			if (cell.weight > highestWeight) {
+				targetCell = cell;
+				highestWeight = cell.weight;
+			}
 		}
-		if (y == 9) {
-			y = -1;
-		}
+		
+		//return ({x : targetCell.x, y : targetCell.y});
+		
+		// placeholder code:	
 		x++;
-		y++;
+		if (x > 9){
+			x = 0;
+			y++;
+		}
+			
 		return ({x:x, y:y});
 		// end placeholder
 		
@@ -344,7 +427,7 @@ CandidateAI.prototype.startGame = function() {
  * [called each time it is your turn to shoot]
  */
 CandidateAI.prototype.shoot = function() {
-	alert("got here: shoot");
+	//alert("got here: shoot");
     var coords = this.getNextCoord();
     var result = this.player.shoot(coords.x, coords.y);
     //result is one of Cell.<type> so that you can re-shoot if necessary. (e.g. you are shooting someplace you already shot)
