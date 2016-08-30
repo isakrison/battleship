@@ -87,106 +87,75 @@ CandidateAI.prototype.initializeGame = function() {
 		sunk : false
 	});
 
-	// ~~~~~~~~~~~~~~~~~~~~~
-	// function getNextCoord
-	// ~~~~~~~~~~~~~~~~~~~~~
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// function getFiringSolution
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~
 	x = -1;
 	y = -1;
-    this.getNextCoord = function() {
+    this.getFiringSolution = function() {
 		
 		this.getPossibleShipLocations();
+		
+		var primaryTargetCount = 0;
+		var secondaryTargetCount = 0;
+		var hitCount = 0;
+		var cell;
+		
+		for (i = 0; i < cells.length; i++) {
+			for (j = 0; j < cells.length; j++) {
+				cell = cells[i][j];
+				switch (parseInt(cell.status)) {
+					case cellStatus.primaryTarget:
+						primaryTargetCount++;
+						break;
+					case cellStatus.secondaryTarget:
+						secondaryTargetCount++;
+						break;
+					case cellStatus.hit:
+						hitCount++;
+						break;
+					default:
+						break;
+				}				
+			}
+		}
 	
 		var targetCellList = [];
 		
-		// ignoring hit-adjacent cells for now
+		if (hitCount > 0) {			
+			// analyze hits and return coords
+			for (i = 0; i < cells.length; i++) {
+				for (j = 0; j < cells.length; j++) {
+					cell = cells[i][j];
+					if(cell.status == cellStatus.hit) {
+						targetCellList.push(cell);
+						// return this.attemptToSink(targetCellList);
+					}
+				}
+			}			
+		}
+		
+		if ((enemyShips[0].sunk && enemyShips[1].sunk && (enemyShips[2].sunk || enemyShips[3].sunk)) || primaryTargetCount < 5) { // this is arbitrary
+			for (i = 0; i < cells.length; i++) {
+				for (j = 0; j < cells.length; j++) {
+					cell = cells[i][j];
+					if(cell.status == cellStatus.primaryTarget || cell.status = cellStatus.secondaryTarget) {
+						targetCellList.push(cell);
+						// return this.chooseTarget(targetCellList);
+					}
+				}
+			}
+		}
+
 		for (i = 0; i < cells.length; i++) {
 			for (j = 0; j < cells.length; j++) {
-				if (cells[i][j].status == cellStatus.primaryTarget) {
-					targetCellList.push(cells[i][j]);
-				}
-				// add secondary targets if enemy Carrier, Battleship, and either their Destroyer or their Submarine is sunk (this is arbitrary and might change later)
-				if (cells[i][j].status == cellStatus.secondaryTarget && enemyShips[0].sunk && enemyShips[1].sunk && (enemyShips[2].sunk || enemyShips[3].sunk)) {
-					targetCellList.push(cells[i][j]);
+				cell = cells[i][j];
+				if(cell.status == cellStatus.primaryTarget) {
+					targetCellList.push(cell);
+					// return this.chooseTarget(targetCellList);
 				}
 			}
 		}
-		
-		var targetCell;
-		var highestWeight = 0;
-		var cell, ship;
-		var cellX, cellY;
-		var above, below, left, right;
-		var locations = 0;
-		var status;
-		for (i = 0; i < targetCellList.length; i++) {
-			above = 0;
-			below = 0;
-			left = 0;
-			right = 0;
-			cell = targetCellList[i];
-			cellX = cell.x;
-			cellY = cell.y;
-			// find empty cells above
-			for (k = 1; k <= 4; k++) {
-				if (cellY - k < 0) {
-					break;
-				}
-				status = cells[cellX][cellY-k].status;
-				if (status == cellStatus.miss || status == cellStatus.sunk || status == cellStatus.clear) {
-					break;
-				}
-				above++;
-			}
-			// find empty cells below
-			for (k = 1; k <= 4; k++) {
-				if (cellY + k > 9) {
-					break;
-				}
-				status = cells[cellX][cellY+k].status;
-				if (status == cellStatus.miss || status == cellStatus.sunk || status == cellStatus.clear) {
-					break;
-				}
-				below++;
-			}
-			// find empty cells to the left
-			for (k = 1; k <= 4; k++) {
-				if (cellX - k < 0) {
-					break;
-				}
-				status = cells[cellX-k][cellY].status;
-				if (status == cellStatus.miss || status == cellStatus.sunk || status == cellStatus.clear) {
-					break;
-				}
-				left++;
-			}
-			// find empty cells to the right
-			for (k = 1; k <= 4; k++) {
-				if (cellX + k > 9) {
-					break;
-				}
-				status = cells[cellX + k][cellY].status;
-				if (status == cellStatus.miss || status == cellStatus.sunk || status == cellStatus.clear) {
-					break;
-				}
-				right++;
-			}
-			
-			// find the probability that any unsunk enemy ship is in this cell
-			for (s = 0; s < enemyShips.length; s++) {
-				ship = enemyShips[s];
-				if (!ship.sunk) {
-					cell.weight += Math.max(0, (Math.max(above, ship.size - 1) + Math.max(below, ship.size - 1) - (ship.size - 2))) / ship.possibleLocations;
-				}
-			}
-			
-			cell.weight = Math.round(cell.weight * 1000) / 1000;
-			if (cell.weight > highestWeight) {
-				targetCell = cell;
-				highestWeight = cell.weight;
-			}
-		}
-		
-		//return ({x : targetCell.x, y : targetCell.y});
 		
 		// placeholder code:	
 		x++;
@@ -196,13 +165,8 @@ CandidateAI.prototype.initializeGame = function() {
 		}
 			
 		return ({x:x, y:y});
-		// end placeholder
-		
-		// we'd handle hits and the cells surrounding them differently (or just assign them probability + 2)
-			// or or... do the probability math for cells surrounding a hit, and just let the chips fall where they may? 
-				// depends on what the actual probability turns out to be, I think
-				// ...this is turning out not to be a small project :P
-    } // end function getNextCoord
+		// end placeholder code		
+    } // end function getFiringSolution
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// function getPossibleShipLocations
@@ -249,6 +213,178 @@ CandidateAI.prototype.initializeGame = function() {
 			}
 		}	
 	}	
+	
+	// function attemptToSink
+	this.attemptToSink = function(targetCellList) {
+		var firstCell = targetCellList[0];
+		var lastCell = targetCellList[1];
+		
+		if (targetCellList.length == 1) {
+			var x = firstCell.x;
+			var y = firstCell.y;
+			
+			// check the (up to) four adjacent cells
+			if (this.isValidShot(x, y - 1) {
+				return {x: x, y: y - 1};
+			}
+			if (this.isValidShot(x + 1, y) {
+				return {x: x + 1, y: y};
+			}
+			if (this.isValidShot(x, y+1) {
+				return {x: x, y: y + 1};
+			}
+			if (this.isValidShot(x-1, y){
+				return {x: x - 1, y: y};
+			}
+		}
+		
+		// horizontal first
+		if (firstCell.y == lastCell.y) {
+			// check left end
+			if (this.isValidShot(firstCell.x - 1, firstCell.y) {
+				return {x: firstCell.x - 1, firstCell.y};
+			}
+			//check right end
+			while (cells[lastCell.x + 1][lastCell.y].status == cellStatus.hit) {
+				lastCell = cells[lastCell.x + 1][lastCell.y];
+			}			
+			if (this.isValidShot(lastCell.x + 1, lastCell.y) {
+				return {x: lastCell.x + 1, lastCell.y};
+			}
+			
+			// if we get here, then ships are broadside, so check along the other axis
+			do {
+				lastCell = firstCell;
+				// check top end
+				if (this.isValidShot(firstCell.x, firstCell.y - 1) {
+					return {x: firstCell.x, firstCell.y - 1};
+				}
+				// check bottom end
+				while (cells[lastCell.x][lastCell.y + 1].status == cellStatus.hit) {
+					lastCell = cells[lastCell.x][lastCell.y + 1];
+				}
+				if (this.isValidShot(lastCell.x, lastCell.y + 1) {
+					return {x: lastCell.x, lastCell.y + 1};
+				}
+				// if we still haven't found a valid shot, move to the right along the original line
+				firstCell = cells[firstCell.x + 1][firstCell.y];
+			} while (firstCell.status == cellStatus.hit);
+		} else {		
+			// vertical first
+			// check top end
+			if (this.isValidShot(firstCell.x, firstCell.y - 1) {
+				return {x: firstCell.x, firstCell.y - 1};
+			}
+			//check bottom end
+			while (cells[lastCell.x][lastCell.y + 1].status == cellStatus.hit) {
+				lastCell = cells[lastCell.x][lastCell.y + 1];
+			}			
+			if (this.isValidShot(lastCell.x, lastCell.y + 1) {
+				return {x: lastCell.x, lastCell.y + 1};
+			}
+			
+			// if we get here, then ships are broadside, so check along the other axis
+			do {
+				lastCell = firstCell;
+				// check right end
+				if (this.isValidShot(firstCell.x - 1, firstCell.y) {
+					return {x: firstCell.x - 1, firstCell.y};
+				}
+				// check left end
+				while (cells[lastCell.x + 1][lastCell.y].status == cellStatus.hit) {
+					lastCell = cells[lastCell.x + 1][lastCell.y];
+				}
+				if (this.isValidShot(lastCell.x + 1, lastCell.y) {
+					return {x: lastCell.x + 1, lastCell.y};
+				}
+				// if we still haven't found a valid shot, move down along the original line
+				firstCell = cells[firstCell.x + 1][firstCell.y];
+			} while (firstCell.status == cellStatus.hit);
+		}
+		// if we haven't returned yet, something's wrong
+	} // end function attemptToSink
+	
+	// ~~~~~~~~~~~~~~~~~~~~~
+	// function chooseTarget
+	// ~~~~~~~~~~~~~~~~~~~~~
+	this.chooseTarget = function(targetCellList) {
+		var targetCell;
+		var highestWeight = 0;
+		var cell, ship;
+		var cellX, cellY;
+		var above, below, left, right;
+		var locations = 0;
+		var status;
+		for (i = 0; i < targetCellList.length; i++) {
+			above = 0;
+			below = 0;
+			left = 0;
+			right = 0;
+			cell = targetCellList[i];
+			cellX = cell.x;
+			cellY = cell.y;
+			// find empty cells above
+			for (k = 1; k <= 4; k++) {
+				if (!this.isValidShot(cellX, cellY-k)) {
+					break;
+				}
+				above++;
+			}
+			// find empty cells below
+			for (k = 1; k <= 4; k++) {
+				if (!this.isValidShot(cellX, cellY+k)) {
+					break;
+				}
+				below++;
+			}
+			// find empty cells to the left
+			for (k = 1; k <= 4; k++) {
+				if (!this.isValidShot(cellX-k, cellY)) {
+					break;
+				}
+				left++;
+			}
+			// find empty cells to the right
+			for (k = 1; k <= 4; k++) {
+				if (!this.isValidShot(cellX+k, cellY)) {
+					break;
+				}
+				right++;
+			}
+			
+			// find the probability that any unsunk enemy ship is in this cell
+			for (s = 0; s < enemyShips.length; s++) {
+				ship = enemyShips[s];
+				if (!ship.sunk) {
+					cell.weight += Math.max(0, (Math.max(above, ship.size - 1) + Math.max(below, ship.size - 1) - (ship.size - 2))) / ship.possibleLocations;
+				}
+			}
+			
+			cell.weight = Math.round(cell.weight * 1000) / 1000;
+			if (cell.weight == 0) {
+				cell.status = cellStatus.clear;
+			}
+			if (cell.weight > highestWeight) {
+				targetCell = cell;
+				highestWeight = cell.weight;
+			}
+		}
+		
+		return ({x : targetCell.x, y : targetCell.y});
+	} // end function chooseTarget
+	
+	// ~~~~~~~~~~~~~~~~~~~~
+	// function isValidShot
+	// ~~~~~~~~~~~~~~~~~~~~
+	this.isValidShot = function(x, y) {
+		return x > 0 && x < 10 && y > 0 && y < 10
+			&& !(
+				cells[x][y].status == cellStatus.hit
+				|| cells[x][y].status == cellStatus.miss
+				|| cells[x][y].status == cellStatus.sunk
+				|| cells[x][y].status == cellStatus.clear
+			);
+	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~
 	// function getRandomInt
@@ -356,17 +492,7 @@ CandidateAI.prototype.startGame = function() {
 			y = this.getRandomInt(0, 5);
 		}
 	}
-	while (! this.player.grid.dockShip(x, y, orientation, Fleet.CARRIER));	
-
-	orientation = this.getRandomInt(0, 1) == 0 ? Ship.HORIZONTAL : Ship.VERTICAL;
-	if (orientation == Ship.HORIZONTAL) {
-		x = this.getRandomInt(0, 5);
-		y = this.getRandomInt(0, 9);			
-	} else {
-		x = this.getRandomInt(0, 9);
-		y = this.getRandomInt(0, 5);
-	}
-	this.player.grid.dockShip(x, y, orientation, Fleet.CARRIER);
+	while (! this.player.grid.dockShip(x, y, orientation, Fleet.CARRIER));
 	
 	// dock Battleship
 	do{
@@ -428,9 +554,22 @@ CandidateAI.prototype.startGame = function() {
  */
 CandidateAI.prototype.shoot = function() {
 	//alert("got here: shoot");
-    var coords = this.getNextCoord();
-    var result = this.player.shoot(coords.x, coords.y);
+    var solution = this.getFiringSolution();
+    var result = this.player.shoot(solution.x, solution.y);
     //result is one of Cell.<type> so that you can re-shoot if necessary. (e.g. you are shooting someplace you already shot)
+	switch (parseInt(result.state)) {
+		case Cell.TYPE_MISS:
+			cells[solution.x][solution.y].status = cellStatus.miss;
+			break;
+		case Cell.TYPE_HIT:
+			cells[solution.x][solution.y].status = cellStatus.hit;
+			break;
+		case Cell.TYPE_SUNK:
+			// handle sunk ship - pass in result
+			break;
+		default:
+			break;
+	}
 };
 
 /**
