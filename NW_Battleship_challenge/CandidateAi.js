@@ -173,6 +173,10 @@ CandidateAI.prototype.initializeGame = function() {
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	this.getPossibleShipLocations = function () {
 		// get total possible locations remaining for each unsunk enemy ship
+		// this could be made more efficient, to make fewer isValidShot checks:
+			// go first row by row, then column by column
+			// after each position check, skip ahead to the square after the one we just checked, since we already know the status of the others
+			// be mindful of the math required
 		var ship;
 		var maxStartingX, maxStartingY;
 		var possibleLocation;		
@@ -187,8 +191,7 @@ CandidateAI.prototype.initializeGame = function() {
 						// check horizontal ship position at this cell
 						possibleLocation = true;
 						for (p = 0; p < ship.size; p++) {
-							var currentStatus = cells[i+p][j].status;
-							if (currentStatus == cellStatus.miss || currentStatus == cellStatus.sunk || currentStatus == cellStatus.clear) {
+							if (!isValidShot(i + p, j)) {
 								possibleLocation = false;
 								break;
 							}
@@ -199,8 +202,7 @@ CandidateAI.prototype.initializeGame = function() {
 						// check vertical ship position at this cell
 						possibleLocation = true;
 						for (p = 0; p < ship.size; p++) {
-							var currentStatus = cells[i][j+p].status;
-							if (currentStatus == cellStatus.miss || currentStatus == cellStatus.sunk || currentStatus == cellStatus.clear) {
+							if (! isValidShot(i, j + p)) {
 								possibleLocation = false;
 								break;
 							}
@@ -214,7 +216,9 @@ CandidateAI.prototype.initializeGame = function() {
 		}	
 	}	
 	
+	// ~~~~~~~~~~~~~~~~~~~~~~
 	// function attemptToSink
+	// ~~~~~~~~~~~~~~~~~~~~~~
 	this.attemptToSink = function(targetCellList) {
 		var firstCell = targetCellList[0];
 		var lastCell = targetCellList[1];
