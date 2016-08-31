@@ -27,12 +27,12 @@ CandidateAI.prototype.initializeGame = function() {
 		clear : 7
 	}
 	
-	cells = [];
+	myCells = [];
 	enemyShips = [];
 	
 	// initialize cells and set initial status
 	for (i = 0; i < 10; i++) {
-		cells[i] = [];		
+		myCells[i] = [];		
 		for (j = 0; j < 10; j++) {			
 
 			status = cellStatus.unknown;			
@@ -45,7 +45,7 @@ CandidateAI.prototype.initializeGame = function() {
 				}
 			}
 			
-			cells[i].push({
+			myCells[i].push({
 				x : i,
 				y : j,
 				status : status,
@@ -96,9 +96,9 @@ CandidateAI.prototype.initializeGame = function() {
 		var hitCount = 0;
 		var cell;
 		
-		for (i = 0; i < cells.length; i++) {
-			for (j = 0; j < cells[i].length; j++) {
-				cell = cells[i][j];
+		for (i = 0; i < myCells.length; i++) {
+			for (j = 0; j < myCells[i].length; j++) {
+				cell = myCells[i][j];
 				switch (parseInt(cell.status)) {
 					case cellStatus.primaryTarget:
 						primaryTargetCount++;
@@ -117,9 +117,9 @@ CandidateAI.prototype.initializeGame = function() {
 		
 		if (hitCount > 0) {			
 			// analyze hits and return coords
-			for (i = 0; i < cells.length; i++) {
-				for (j = 0; j < cells.length; j++) {
-					cell = cells[i][j];
+			for (i = 0; i < myCells.length; i++) {
+				for (j = 0; j < myCells.length; j++) {
+					cell = myCells[i][j];
 					if(cell.status == cellStatus.hit) {
 						targetCellList.push(cell);
 					}
@@ -132,9 +132,9 @@ CandidateAI.prototype.initializeGame = function() {
 		this.getPossibleShipLocations();
 		
 		if ((enemyShips[0].sunk && enemyShips[1].sunk && (enemyShips[2].sunk || enemyShips[3].sunk)) || primaryTargetCount < 5) { // this is arbitrary
-			for (i = 0; i < cells.length; i++) {
-				for (j = 0; j < cells.length; j++) {
-					cell = cells[i][j];
+			for (i = 0; i < myCells.length; i++) {
+				for (j = 0; j < myCells.length; j++) {
+					cell = myCells[i][j];
 					if(cell.status == cellStatus.primaryTarget || cell.status == cellStatus.secondaryTarget) {
 						targetCellList.push(cell);
 					}
@@ -144,9 +144,9 @@ CandidateAI.prototype.initializeGame = function() {
 			return this.chooseTarget(targetCellList);
 		}
 
-		for (i = 0; i < cells.length; i++) {
-			for (j = 0; j < cells.length; j++) {
-				cell = cells[i][j];
+		for (i = 0; i < myCells.length; i++) {
+			for (j = 0; j < myCells.length; j++) {
+				cell = myCells[i][j];
 				if(cell.status == cellStatus.primaryTarget) {
 					targetCellList.push(cell);
 				}
@@ -172,14 +172,14 @@ CandidateAI.prototype.initializeGame = function() {
 			ship = enemyShips[n];
 			if (!ship.sunk) {
 				ship.possibleLocations = 0;
-				maxStartingX = cells.length - ship.size + 1
+				maxStartingX = myCells.length - ship.size + 1
 				for (i = 0; i < maxStartingX; i++) {
-					maxStartingY = cells[i].length - ship.size + 1;
+					maxStartingY = myCells[i].length - ship.size + 1;
 					for (j = 0; j < maxStartingY; j++) {
 						// check horizontal ship position at this cell
 						possibleLocation = true;
 						for (p = 0; p < ship.size; p++) {
-							cell = cells[i + p][j];
+							cell = myCells[i + p][j];
 							if(cell.status == cellStatus.miss || cell.status == cellStatus.sunk || cell.status == cellStatus.clear) {
 								possibleLocation = false;
 								break;
@@ -191,7 +191,7 @@ CandidateAI.prototype.initializeGame = function() {
 						// check vertical ship position at this cell
 						possibleLocation = true;
 						for (p = 0; p < ship.size; p++) {
-							cell = cells[i][j + p];
+							cell = myCells[i][j + p];
 							if(cell.status == cellStatus.miss || cell.status == cellStatus.sunk || cell.status == cellStatus.clear) {
 								possibleLocation = false;
 								break;
@@ -334,8 +334,8 @@ CandidateAI.prototype.initializeGame = function() {
 		
 		// if hits are in a horizontal line
 		if (firstCell.y == lastCell.y) {
-			while (lastCell.x < cells.length - 1 && cells[lastCell.x + 1][lastCell.y].status == cellStatus.hit) {
-				lastCell = cells[lastCell.x + 1][lastCell.y];
+			while (lastCell.x < myCells.length - 1 && myCells[lastCell.x + 1][lastCell.y].status == cellStatus.hit) {
+				lastCell = myCells[lastCell.x + 1][lastCell.y];
 			}
 			
 			if (this.isValidShot(firstCell.x - 1, firstCell.y) && this.isValidShot(lastCell.x + 1, lastCell.y))
@@ -363,8 +363,8 @@ CandidateAI.prototype.initializeGame = function() {
 			
 			// if we get here, then ships are broadside, so check along the other axis
 			lastCell = firstCell;
-			while (lastCell.y < cells[0].length - 1 && cells[lastCell.x][lastCell.y + 1].status == cellStatus.hit) {
-				lastCell = cells[lastCell.x][lastCell.y + 1];
+			while (lastCell.y < myCells[0].length - 1 && myCells[lastCell.x][lastCell.y + 1].status == cellStatus.hit) {
+				lastCell = myCells[lastCell.x][lastCell.y + 1];
 			}
 			
 			if (this.isValidShot(firstCell.x, firstCell.y - 1) && this.isValidShot(lastCell.x, lastCell.y + 1)) {
@@ -389,8 +389,8 @@ CandidateAI.prototype.initializeGame = function() {
 				return {x: lastCell.x, y: lastCell.y + 1};
 			}
 		} else { // hits are in a vertical line
-			while (lastCell.y < cells[0].length - 1 && cells[lastCell.x][lastCell.y + 1].status == cellStatus.hit) {
-				lastCell = cells[lastCell.x][lastCell.y + 1];
+			while (lastCell.y < myCells[0].length - 1 && myCells[lastCell.x][lastCell.y + 1].status == cellStatus.hit) {
+				lastCell = myCells[lastCell.x][lastCell.y + 1];
 			}
 			
 			if (this.isValidShot(firstCell.x, firstCell.y - 1) && this.isValidShot(lastCell.x, lastCell.y + 1))
@@ -418,8 +418,8 @@ CandidateAI.prototype.initializeGame = function() {
 			
 			// if we get here, then ships are broadside, so check along the other axis
 			lastCell = firstCell;
-			while (lastCell.x < cells.length  - 1 && cells[lastCell.x + 1][lastCell.y].status == cellStatus.hit) {
-				lastCell = cells[lastCell.x + 1][lastCell.y];
+			while (lastCell.x < myCells.length  - 1 && myCells[lastCell.x + 1][lastCell.y].status == cellStatus.hit) {
+				lastCell = myCells[lastCell.x + 1][lastCell.y];
 			}
 			
 			if (this.isValidShot(firstCell.x - 1, firstCell.y) && this.isValidShot(lastCell.x + 1, lastCell.y)) {
@@ -562,10 +562,10 @@ CandidateAI.prototype.initializeGame = function() {
 	this.isValidShot = function(x, y) {
 		return x >= 0 && x < 10 && y >= 0 && y < 10
 			&& !(
-				cells[x][y].status == cellStatus.hit
-				|| cells[x][y].status == cellStatus.miss
-				|| cells[x][y].status == cellStatus.sunk
-				|| cells[x][y].status == cellStatus.clear
+				myCells[x][y].status == cellStatus.hit
+				|| myCells[x][y].status == cellStatus.miss
+				|| myCells[x][y].status == cellStatus.sunk
+				|| myCells[x][y].status == cellStatus.clear
 			);
 	}
 	
@@ -620,7 +620,7 @@ CandidateAI.prototype.initializeGame = function() {
 		for (var row = 0; row < 10; row++) {
 			shotTable += row + "  ";
 			for (var column = 0; column < 10; column++) {
-				var cell = cells[column][row];
+				var cell = myCells[column][row];
 				switch (parseInt(cell.status)) {
 					case cellStatus.primaryTarget:
 						shotTable += " ~ ";
@@ -743,10 +743,10 @@ CandidateAI.prototype.shoot = function() {
     //result is one of Cell.<type> so that you can re-shoot if necessary. (e.g. you are shooting someplace you already shot)
 	switch (parseInt(result.state)) {
 		case Cell.TYPE_MISS:
-			cells[solution.x][solution.y].status = cellStatus.miss;
+			myCells[solution.x][solution.y].status = cellStatus.miss;
 			break;
 		case Cell.TYPE_HIT:
-			cells[solution.x][solution.y].status = cellStatus.hit;
+			myCells[solution.x][solution.y].status = cellStatus.hit;
 			break;
 		case Cell.TYPE_SUNK:
 			var ship;
@@ -771,21 +771,21 @@ CandidateAI.prototype.shoot = function() {
 			
 			ship.sunk = true;
 			ship.possibleLocations = 0;
-			if (solution.y > 0 && cells[solution.x][solution.y - 1].status == cellStatus.hit) {
+			if (solution.y > 0 && myCells[solution.x][solution.y - 1].status == cellStatus.hit) {
 				for (i = 0; i < ship.size; i++) {
-					cells[solution.x][solution.y - i].status = cellStatus.sunk;
+					myCells[solution.x][solution.y - i].status = cellStatus.sunk;
 				}
-			} else if (solution.x < cells.length - 1 && cells[solution.x + 1][solution.y].status == cellStatus.hit){
+			} else if (solution.x < myCells.length - 1 && myCells[solution.x + 1][solution.y].status == cellStatus.hit){
 				for (i = 0; i < ship.size; i++) {
-					cells[solution.x + i][solution.y].status = cellStatus.sunk;
+					myCells[solution.x + i][solution.y].status = cellStatus.sunk;
 				}
-			} else if (solution.y < cells[0].length - 1 && cells[solution.x][solution.y + 1].status == cellStatus.hit) {
+			} else if (solution.y < myCells[0].length - 1 && myCells[solution.x][solution.y + 1].status == cellStatus.hit) {
 				for (i = 0; i < ship.size; i++) {
-					cells[solution.x][solution.y + i].status = cellStatus.sunk;
+					myCells[solution.x][solution.y + i].status = cellStatus.sunk;
 				}
-			} else if (solution.x > 0 && cells[solution.x - 1][solution.y].status == cellStatus.hit) {
+			} else if (solution.x > 0 && myCells[solution.x - 1][solution.y].status == cellStatus.hit) {
 				for (i = 0; i< ship.size; i++) {
-					cells[solution.x - i][solution.y].status = cellStatus.sunk;
+					myCells[solution.x - i][solution.y].status = cellStatus.sunk;
 				}
 			}				
 			break;
