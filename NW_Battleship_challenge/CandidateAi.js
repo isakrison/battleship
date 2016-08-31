@@ -124,13 +124,13 @@ CandidateAI.prototype.initializeGame = function() {
 					}
 				}
 			}
-			//console.log("got here: getFiringSolution 1");
+			console.log("getFiringSolution 1");
 			return this.attemptToSink(targetCellList);			
 		}
 		
 		this.getPossibleShipLocations();
 		
-		if ((enemyShips[0].sunk && enemyShips[1].sunk && (enemyShips[2].sunk || enemyShips[3].sunk)) || primaryTargetCount < 5) { // this is arbitrary
+		if ((enemyShips[0].sunk && enemyShips[1].sunk && (enemyShips[2].sunk || enemyShips[3].sunk)) || primaryTargetCount < 7) { // this is arbitrary
 			for (i = 0; i < myCells.length; i++) {
 				for (j = 0; j < myCells.length; j++) {
 					cell = myCells[i][j];
@@ -139,7 +139,7 @@ CandidateAI.prototype.initializeGame = function() {
 					}
 				}
 			}
-			//console.log("got here: getFiringSolution 2");
+			console.log("getFiringSolution 2");
 			return this.chooseTarget(targetCellList);
 		}
 
@@ -151,7 +151,8 @@ CandidateAI.prototype.initializeGame = function() {
 				}
 			}
 		}
-		//console.log("got here: getFiringSolution 3");
+		
+		console.log("getFiringSolution 3");
 		return this.chooseTarget(targetCellList);	
     } // end function getFiringSolution
 	
@@ -210,6 +211,7 @@ CandidateAI.prototype.initializeGame = function() {
 	// ~~~~~~~~~~~~~~~~~~~~~
 	this.chooseTarget = function(targetCellList) {
 		var targetCandidates = [targetCellList[0]];
+		var candidatePoolSize = 3; // arbitrary
 		var targetCell;
 		var randomIndex;
 		var thresholdWeight = 0;
@@ -243,13 +245,13 @@ CandidateAI.prototype.initializeGame = function() {
 				cell.status = cellStatus.clear;
 			}
 			
-			// maintain a running list of the top three (maximum) highest-weighted cells, with ties broken randomly
+			// maintain a running list of the top several highest-weighted cells, with ties broken randomly
 			if (cell.weight >= thresholdWeight) {
 				thresholdWeight = cell.weight;
-				for (p = 0; p < Math.min(targetCandidates.length, 3); p++) {
+				for (p = 0; p < Math.min(targetCandidates.length, candidatePoolSize); p++) {
 					if (cell.weight > targetCandidates[p].weight) {
 						for (q = targetCandidates.length; q > p; q--) {
-							if (q < 3) {
+							if (q < candidatePoolSize) {
 								targetCandidates[q] = targetCandidates[q - 1];
 							}
 						}
@@ -257,7 +259,7 @@ CandidateAI.prototype.initializeGame = function() {
 						break;
 					} else if (cell.weight == targetCandidates[p].weight && this.getRandomInt(0, 1) == 1) {
 						for (q = targetCandidates.length; q > p; q--) {
-							if (q < 5) {
+							if (q < candidatePoolSize) {
 								targetCandidates[q] = targetCandidates[q - 1];
 							}
 						}
@@ -268,9 +270,10 @@ CandidateAI.prototype.initializeGame = function() {
 			}
 		}
 		
+		// pick a target randomly from the top few cells with the highest weights
 		targetCell = targetCandidates[this.getRandomInt(0, targetCandidates.length - 1)];
 		
-		//console.log("got here: chooseTarget 1");
+		console.log("chooseTarget");
 		return ({x : targetCell.x, y : targetCell.y});
 	} // end function chooseTarget
 	
@@ -297,7 +300,7 @@ CandidateAI.prototype.initializeGame = function() {
 			left = empties.left;
 			right = empties.right;
 			
-			if (this.isValidShot(x, y - 1)) {			
+			if (this.isValidShot(x, y - 1)) {
 				aboveWeight = this.getWeightForHitFollowup("above", above, below, 1);
 				highestWeight = aboveWeight;
 				returnX = x;
@@ -305,7 +308,7 @@ CandidateAI.prototype.initializeGame = function() {
 			}
 			if (this.isValidShot(x, y + 1)) {
 				belowWeight = this.getWeightForHitFollowup("below", above, below, 1);
-				if (belowWeight > highestWeight) {
+				if (belowWeight >= highestWeight) {
 					highestWeight = belowWeight;
 					returnX = x;
 					returnY = y + 1;
@@ -313,7 +316,7 @@ CandidateAI.prototype.initializeGame = function() {
 			}
 			if (this.isValidShot(x - 1, y)) {
 				leftWeight = this.getWeightForHitFollowup("left", left, right, 1);
-				if (leftWeight > highestWeight) {
+				if (leftWeight >= highestWeight) {
 					highestWeight = leftWeight;
 					returnX = x - 1;
 					returnY = y;
@@ -321,13 +324,13 @@ CandidateAI.prototype.initializeGame = function() {
 			}
 			if (this.isValidShot(x + 1, y)) {
 				rightWeight = this.getWeightForHitFollowup("right", left, right, 1);
-				if (rightWeight > highestWeight) {
+				if (rightWeight >= highestWeight) {
 					returnX = x + 1;
 					returnY = y;
 				}
 			}
 			
-			//console.log("got here: attemptToSink 1");
+			console.log("attemptToSink 1");
 			return {x: returnX, y: returnY};
 		}
 		
@@ -346,17 +349,17 @@ CandidateAI.prototype.initializeGame = function() {
 				rightWeight = this.getWeightForHitFollowup("right", left, right, targetCellList.length);
 				
 				if (Math.max(leftWeight, rightWeight) == leftWeight) {
-					//console.log("got here: attemptToSink 2");
+					console.log("attemptToSink 2");
 					return {x: firstCell.x - 1, y: firstCell.y};
 				} else {
-					//console.log("got here: attemptToSink 3");
+					console.log("attemptToSink 3");
 					return {x: lastCell.x + 1, y: lastCell.y};
 				}
 			} else if (this.isValidShot(firstCell.x - 1, firstCell.y)) {
-				//console.log("got here: attemptToSink 4");
+				console.log("attemptToSink 4");
 				return {x: firstCell.x - 1, y: firstCell.y};
 			} else if (this.isValidShot(lastCell.x + 1, lastCell.y)) {
-				//console.log("got here: attemptToSink 5");
+				console.log("attemptToSink 5");
 				return {x: lastCell.x + 1, y: lastCell.y};
 			}
 			
@@ -374,17 +377,17 @@ CandidateAI.prototype.initializeGame = function() {
 				belowWeight = this.getWeightForHitFollowup("below", above, below, targetCellList.length);
 				
 				if (Math.max(aboveWeight, belowWeight) == aboveWeight) {
-					//console.log("got here: attemptToSink 6");
+					console.log("attemptToSink 6");
 					return {x: firstCell.x, y: firstCell.y - 1};
 				} else {
-					//console.log("got here: attemptToSink 7");
+					console.log("attemptToSink 7");
 					return {x: lastCell.x, y: lastCell.y + 1};
 				}
 			} else if (this.isValidShot(firstCell.x, firstCell.y - 1)) {
-				//console.log("got here: attemptToSink 8");
+				console.log("attemptToSink 8");
 				return {x: firstCell.x, y: firstCell.y - 1};
 			} else if (this.isValidShot(lastCell.x, lastCell.y + 1)) {
-				//console.log("got here: attemptToSink 9");
+				console.log("attemptToSink 9");
 				return {x: lastCell.x, y: lastCell.y + 1};
 			}
 		} else { // hits are in a vertical line
@@ -401,17 +404,17 @@ CandidateAI.prototype.initializeGame = function() {
 				belowWeight = this.getWeightForHitFollowup("below", above, below, targetCellList.length);
 				
 				if (Math.max(aboveWeight, belowWeight) == aboveWeight) {
-					//console.log("got here: attemptToSink 10");
+					console.log("attemptToSink 10");
 					return {x: firstCell.x, y: firstCell.y - 1};
 				} else {
-					//console.log("got here: attemptToSink 11");
+					console.log("attemptToSink 11");
 					return {x: lastCell.x, y: lastCell.y + 1};
 				}
 			} else if (this.isValidShot(firstCell.x, firstCell.y - 1)) {
-				//console.log("got here: attemptToSink 12");
+				console.log("attemptToSink 12");
 				return {x: firstCell.x, y: firstCell.y - 1};
 			} else if (this.isValidShot(lastCell.x, lastCell.y + 1)) {
-				//console.log("got here: attemptToSink 13");
+				console.log("attemptToSink 13");
 				return {x: lastCell.x, y: lastCell.y + 1};
 			}
 			
@@ -429,22 +432,26 @@ CandidateAI.prototype.initializeGame = function() {
 				rightWeight = this.getWeightForHitFollowup("right", left, right, targetCellList.length);
 				
 				if (Math.max(leftWeight, rightWeight) == leftWeight) {
-					//console.log("got here: attemptToSink 14");
+					console.log("attemptToSink 14");
 					return {x: firstCell.x - 1, y: firstCell.y};
 				} else {
-					//console.log("got here: attemptToSink 15");
+					console.log("attemptToSink 15");
 					return {x: lastCell.x + 1, y: lastCell.y};
 				}
 			} else if (this.isValidShot(firstCell.x - 1, firstCell.y)) {
-				//console.log("got here: attemptToSink 16");
+				console.log("attemptToSink 16");
 				return {x: firstCell.x - 1, y: firstCell.y};
 			} else if (this.isValidShot(lastCell.x + 1, lastCell.y)) {
-				//console.log("got here: attemptToSink 17");
+				console.log("attemptToSink 17");
 				return {x: lastCell.x + 1, y: lastCell.y};
 			}
 		}
 		// if we haven't returned yet, something's wrong
-		//console.log("We got here somehow");
+		console.log("attemptToSink: we got here somehow");
+		console.log("targetCellList:");
+		for (z = 0; z < targetCellList.length; z++) {
+			console.log("    [" + targetCellList[z].x + ", " + targetCellList[z].y + "]");
+		}
 	} // end function attemptToSink
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -536,7 +543,7 @@ CandidateAI.prototype.initializeGame = function() {
 					// in brief:
 					// available space = available positions leadward + hits + (available positions trailward - 1)
 					// total positions = "wiggle room" = available space - ship size + 1
-					totalWeight += Math.min(ship.size - hits, leadCells) + hits + Math.min(ship.size - hits - 1, trailCells) - ship.size + 1;
+					totalWeight += Math.max(0, Math.min(ship.size - hits, leadCells) + hits + Math.min(ship.size - hits - 1, trailCells) - ship.size + 1);
 				}
 			}
 		} else {
@@ -547,7 +554,7 @@ CandidateAI.prototype.initializeGame = function() {
 				ship = enemyShips[i];
 				if (!ship.sunk) {
 					// same as above, only with leadward and trailward swapped
-					totalWeight += Math.min(ship.size - hits, trailCells) + hits + Math.min(ship.size - hits - 1, leadCells) - ship.size + 1;
+					totalWeight += Math.max(0, Math.min(ship.size - hits, trailCells) + hits + Math.min(ship.size - hits - 1, leadCells) - ship.size + 1);
 				}
 			}
 		}
@@ -656,10 +663,10 @@ CandidateAI.prototype.initializeGame = function() {
 		}
 		shotTable += "\n";
 		
-		//console.log("Upper grid: \n");
-		//console.log(shotTable);
-		////console.log("Lower grid: \n");
-		////console.log(shipTable);
+		console.log("Upper grid: \n");
+		console.log(shotTable);
+		console.log("Lower grid: \n");
+		console.log(shipTable);
 	} // end function outputGameStatus
 };
 
@@ -740,10 +747,12 @@ CandidateAI.prototype.startGame = function() {
 /**
  * [called each time it is your turn to shoot]
  */
-CandidateAI.prototype.shoot = function() {		
-    var solution = this.getFiringSolution();	
+CandidateAI.prototype.shoot = function() {
+    var solution = this.getFiringSolution();
     var result = this.player.shoot(solution.x, solution.y);
 	var ship;
+	
+	console.log("Shoot: [" + solution.x + ", " + solution.y + "]");
 	
     //result is one of Cell.<type> so that you can re-shoot if necessary. (e.g. you are shooting someplace you already shot)
 	switch (parseInt(result.state)) {
@@ -795,8 +804,7 @@ CandidateAI.prototype.shoot = function() {
 			break;
 	}
 	
-	// //console.log("Shooting [" + solution.x + ", " + solution.y + "]\n"); // debugging
-	//this.outputGameStatus(); // debugging
+	this.outputGameStatus(); // debugging
 };
 
 /**

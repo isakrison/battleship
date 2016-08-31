@@ -1,0 +1,314 @@
+getFiringSolution 3
+CandidateAi.js:276 chooseTarget
+CandidateAi.js:755 Shoot: [2, 6]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+5   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  ~  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:155 getFiringSolution 3
+CandidateAi.js:276 chooseTarget
+CandidateAi.js:755 Shoot: [3, 5]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+5   ~  ~  ~  O  ~  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  ~  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:155 getFiringSolution 3
+CandidateAi.js:276 chooseTarget
+CandidateAi.js:755 Shoot: [4, 4]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  ~  H  ~  ~  ~  ~  ~ 
+5   ~  ~  ~  O  ~  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  ~  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:333 attemptToSink 1
+CandidateAi.js:755 Shoot: [5, 4]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  ~  H  H  ~  ~  ~  ~ 
+5   ~  ~  ~  O  ~  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  ~  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:352 attemptToSink 2
+CandidateAi.js:755 Shoot: [3, 4]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  O  H  H  ~  ~  ~  ~ 
+5   ~  ~  ~  O  ~  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  ~  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:362 attemptToSink 5
+CandidateAi.js:755 Shoot: [6, 4]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  O  H  H  O  ~  ~  ~ 
+5   ~  ~  ~  O  ~  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  ~  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:380 attemptToSink 6
+CandidateAi.js:755 Shoot: [4, 3]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  H  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  O  H  H  O  ~  ~  ~ 
+5   ~  ~  ~  O  ~  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  ~  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:407 attemptToSink 10
+CandidateAi.js:755 Shoot: [4, 2]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  H  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  H  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  O  H  H  O  ~  ~  ~ 
+5   ~  ~  ~  O  ~  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  ~  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:410 attemptToSink 11
+CandidateAi.js:755 Shoot: [4, 5]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  H  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  H  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  O  H  H  O  ~  ~  ~ 
+5   ~  ~  ~  O  H  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  ~  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:410 attemptToSink 11
+CandidateAi.js:755 Shoot: [4, 6]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  H  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  H  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  O  H  H  O  ~  ~  ~ 
+5   ~  ~  ~  O  H  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  H  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:407 attemptToSink 10
+CandidateAi.js:755 Shoot: [4, 1]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  O  X  H  O  ~  ~  ~ 
+5   ~  ~  ~  O  X  ~  ~  ~  ~  ~ 
+6   ~  ~  O  ~  H  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:417 attemptToSink 13
+CandidateAi.js:755 Shoot: [5, 5]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  O  X  H  O  ~  ~  ~ 
+5   ~  ~  ~  O  X  O  ~  ~  ~  ~ 
+6   ~  ~  O  ~  H  ~  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:438 attemptToSink 15
+CandidateAi.js:755 Shoot: [5, 6]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  O  X  H  O  ~  ~  ~ 
+5   ~  ~  ~  O  X  O  ~  ~  ~  ~ 
+6   ~  ~  O  ~  H  O  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:442 attemptToSink 16
+CandidateAi.js:755 Shoot: [3, 6]
+CandidateAi.js:666 Upper grid: 
+
+CandidateAi.js:667     0  1  2  3  4  5  6  7  8  9
+
+0   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+1   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+2   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+3   ~  ~  ~  ~  X  ~  ~  ~  ~  ~ 
+4   ~  ~  ~  O  X  H  O  ~  ~  ~ 
+5   ~  ~  ~  O  X  O  ~  ~  ~  ~ 
+6   ~  ~  O  O  H  O  ~  ~  ~  ~ 
+7   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+8   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+9   ~  ~  ~  ~  ~  ~  ~  ~  ~  ~ 
+
+
+CandidateAi.js:668 Lower grid: 
+
+CandidateAi.js:669 
+CandidateAi.js:127 getFiringSolution 1
+CandidateAi.js:450 attemptToSink: we got here somehow
+CandidateAi.js:451 targetCellList:
+CandidateAi.js:453     [4, 6]
+CandidateAi.js:453     [5, 4]
+CandidateAi.js:752 Uncaught TypeError: Cannot read property 'x' of undefined
