@@ -94,7 +94,8 @@ CandidateAI.prototype.initializeGame = function() {
 		var primaryTargetCount = 0;
 		var secondaryTargetCount = 0;
 		var hitCount = 0;
-		var cell;
+		var cell;	
+		var targetCellList = [];
 		
 		for (i = 0; i < myCells.length; i++) {
 			for (j = 0; j < myCells[i].length; j++) {
@@ -112,8 +113,6 @@ CandidateAI.prototype.initializeGame = function() {
 				}				
 			}
 		}
-	
-		var targetCellList = [];
 		
 		if (hitCount > 0) {			
 			// analyze hits and return coords
@@ -285,6 +284,11 @@ CandidateAI.prototype.initializeGame = function() {
 		var empties;
 		var above, below, left, right;
 		var aboveWeight, belowWeight, leftWeight, rightWeight;
+			
+		var x = firstCell.x;
+		var y = firstCell.y;
+		var highestWeight = 0;
+		var returnX, returnY;
 		
 		if (targetCellList.length == 1) {
 			empties = this.getSurroundingEmptyCells(firstCell, firstCell);
@@ -292,11 +296,6 @@ CandidateAI.prototype.initializeGame = function() {
 			below = empties.below;
 			left = empties.left;
 			right = empties.right;
-			
-			var x = firstCell.x;
-			var y = firstCell.y;
-			var highestWeight = 0;
-			var returnX, returnY;
 			
 			if (this.isValidShot(x, y - 1)) {			
 				aboveWeight = this.getWeightForHitFollowup("above", above, below, 1);
@@ -460,6 +459,10 @@ CandidateAI.prototype.initializeGame = function() {
 		};
 		var direction;
 		var diff;
+		var myAbove = 0;
+		var myBelow = 0;
+		var myLeft = 0;
+		var myRight = 0;
 		
 		if (tail.x - head.x > 0) {
 			direction = directions.horizontal;
@@ -474,10 +477,6 @@ CandidateAI.prototype.initializeGame = function() {
 		
 		cellX = head.x;
 		cellY = head.y;
-		var myAbove = 0;
-		var myBelow = 0;
-		var myLeft = 0;
-		var myRight = 0;
 		
 		// find empty cells above
 		if (direction == directions.vertical || direction == directions.nil) {
@@ -581,14 +580,20 @@ CandidateAI.prototype.initializeGame = function() {
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~
 	// shamelessly stolen from battleship.js
 	this.outputGameStatus = function () {
-		/*
+		
 		var shipTable = "";
+		var shotTable = "";
+		var row, column;
+		var cell;
+		var ship;
+		var shipType;
+		/*
 		shipTable += "    0  1  2  3  4  5  6  7  8  9\n\n";
-		for (var row = 0; row < 10; row++) {
+		for (row = 0; row < 10; row++) {
 			shipTable += row + "  ";
-			for (var column = 0; column < 10; column++) {
-				var ship = this.player.grid.getShipByCoord(row, column);
-				var shipType = ship ? ship.type : "";
+			for (column = 0; column < 10; column++) {
+				ship = this.player.grid.getShipByCoord(row, column);
+				shipType = ship ? ship.type : "";
 				switch (shipType) {
 					case Fleet.BATTLESHIP:
 						shipTable += " B ";
@@ -615,12 +620,11 @@ CandidateAI.prototype.initializeGame = function() {
 		shipTable += "\n";
 		*/
 		
-		var shotTable = "";
 		shotTable += "    0  1  2  3  4  5  6  7  8  9\n\n";
-		for (var row = 0; row < 10; row++) {
+		for (row = 0; row < 10; row++) {
 			shotTable += row + "  ";
-			for (var column = 0; column < 10; column++) {
-				var cell = myCells[column][row];
+			for (column = 0; column < 10; column++) {
+				cell = myCells[column][row];
 				switch (parseInt(cell.status)) {
 					case cellStatus.primaryTarget:
 						shotTable += " ~ ";
@@ -737,9 +741,10 @@ CandidateAI.prototype.startGame = function() {
  * [called each time it is your turn to shoot]
  */
 CandidateAI.prototype.shoot = function() {		
-    var solution = this.getFiringSolution();
-	
+    var solution = this.getFiringSolution();	
     var result = this.player.shoot(solution.x, solution.y);
+	var ship;
+	
     //result is one of Cell.<type> so that you can re-shoot if necessary. (e.g. you are shooting someplace you already shot)
 	switch (parseInt(result.state)) {
 		case Cell.TYPE_MISS:
@@ -749,7 +754,6 @@ CandidateAI.prototype.shoot = function() {
 			myCells[solution.x][solution.y].status = cellStatus.hit;
 			break;
 		case Cell.TYPE_SUNK:
-			var ship;
 			// handle sunk ship - pass in result
 			switch (parseInt(result.ship)) {
 				case Fleet.CARRIER:
