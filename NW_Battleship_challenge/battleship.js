@@ -1088,7 +1088,7 @@ function getAvg(numArr) {
 	return total / numArr.length;
 }
 
-var simulatorInstance = new Simulator(1);
+var simulatorInstance = new Simulator(999);
 simulatorInstance.startSimulation();
 
 
